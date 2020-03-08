@@ -36,6 +36,42 @@ IntVector2 GetMousePositionOnBoard() {
     return boardPosition;
 }
 
+void NextBoard(short board[][boardSide]) {
+    /* Any live cell with two or three neighbors survives. */
+    /* Any dead cell with three live neighbors becomes a live cell. */
+    /* All other live cells die in the next generation. Similarly, all other
+     * dead cells stay dead. */
+
+    short tempBoard[boardSide][boardSide];
+
+    for (int x = 0; x < boardSide; x++) {
+        for (int y = 0; y < boardSide; y++) {
+            short livingNeighbors = 0;
+
+            livingNeighbors += board[x][y - 1];
+            livingNeighbors += board[x][y + 1];
+            livingNeighbors += board[x + 1][y];
+            livingNeighbors += board[x - 1][y];
+            livingNeighbors += board[x - 1][y - 1];
+            livingNeighbors += board[x + 1][y + 1];
+            livingNeighbors += board[x + 1][y - 1];
+            livingNeighbors += board[x - 1][y + 1];
+
+            if (board[x][y] == 1 &&
+                (livingNeighbors == 2 || livingNeighbors == 3)) {
+                tempBoard[x][y] = 1;
+            } else if (board[x][y] == 0 && livingNeighbors == 3) {
+                tempBoard[x][y] = 1;
+            } else {
+                tempBoard[x][y] = 0;
+            }
+        }
+    }
+
+    // TODO: is this a memory leak?
+    memcpy(board, tempBoard, sizeof(short[boardSide][boardSide]));
+}
+
 int main(void) {
     // Initialization
     //--------------------------------------------------------------------------------------
@@ -57,14 +93,22 @@ int main(void) {
         }
     }
 
+    IntVector2 lastMousePositionOnBoard;
+    lastMousePositionOnBoard.x = boardSide + 1;
+    lastMousePositionOnBoard.y = boardSide + 1;
+
     // Main game loop
     while (!WindowShouldClose()) // Detect window close button or ESC key
     {
         // Update
         //----------------------------------------------------------------------------------
 
-        if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-            IntVector2 mousePositionOnBoard = GetMousePositionOnBoard();
+        IntVector2 mousePositionOnBoard = GetMousePositionOnBoard();
+
+        if (IsMouseButtonDown(MOUSE_LEFT_BUTTON) &&
+            // TODO: can the repetition in the conditions be removed here?
+            mousePositionOnBoard.x != lastMousePositionOnBoard.x &&
+            mousePositionOnBoard.y != lastMousePositionOnBoard.y) {
 
             // TODO: clean this up (bit operations?)
             short cellState =
@@ -72,6 +116,10 @@ int main(void) {
 
             board[mousePositionOnBoard.x][mousePositionOnBoard.y] =
                 cellState == 0 ? 1 : 0;
+        }
+
+        if (IsKeyDown(KEY_SPACE)) {
+            NextBoard(board);
         }
 
         /*     cellColor = MAROON; */
