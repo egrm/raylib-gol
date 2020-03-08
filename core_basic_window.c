@@ -72,6 +72,22 @@ void NextBoard(short board[][boardSide]) {
     memcpy(board, tempBoard, sizeof(short[boardSide][boardSide]));
 }
 
+void RandomizeBoard(short board[][boardSide]) {
+    for (int x = 0; x < boardSide; x++) {
+        for (int y = 0; y < boardSide; y++) {
+            board[x][y] = rand() % 2;
+        }
+    }
+}
+
+void NullifyBoard(short board[][boardSide]) {
+    for (int x = 0; x < boardSide; x++) {
+        for (int y = 0; y < boardSide; y++) {
+            board[x][y] = 0;
+        }
+    }
+}
+
 int main(void) {
     // Initialization
     //--------------------------------------------------------------------------------------
@@ -87,11 +103,7 @@ int main(void) {
 
     short board[boardSide][boardSide];
 
-    for (int x = 0; x < boardSide; x++) {
-        for (int y = 0; y < boardSide; y++) {
-            board[x][y] = rand() % 2;
-        }
-    }
+    NullifyBoard(board);
 
     IntVector2 lastMousePositionOnBoard;
     lastMousePositionOnBoard.x = boardSide + 1;
@@ -120,6 +132,14 @@ int main(void) {
 
         if (IsKeyDown(KEY_SPACE)) {
             NextBoard(board);
+        }
+
+        if (IsKeyPressed(KEY_R)) {
+            RandomizeBoard(board);
+        }
+
+        if (IsKeyPressed(KEY_C)) {
+            NullifyBoard(board);
         }
 
         /*     cellColor = MAROON; */
