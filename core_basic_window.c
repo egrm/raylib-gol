@@ -1,6 +1,11 @@
 #include "raylib.h"
 #include <stdlib.h>
 
+typedef struct {
+    int x;
+    int y;
+} IntVector2;
+
 const int screenWidth = 400;
 const int screenHeight = 400;
 
@@ -20,6 +25,17 @@ void DrawBoard(short cells[][boardSide], float cellSide) {
     }
 }
 
+IntVector2 GetMousePositionOnBoard() {
+    Vector2 mousePosition = GetMousePosition();
+
+    IntVector2 boardPosition;
+
+    boardPosition.x = mousePosition.x / boardSide;
+    boardPosition.y = mousePosition.y / boardSide;
+
+    return boardPosition;
+}
+
 int main(void) {
     // Initialization
     //--------------------------------------------------------------------------------------
@@ -33,11 +49,11 @@ int main(void) {
     SetTargetFPS(60); // Set our game to run at 60 frames-per-second
     //-------------s--------------------------------------------------------------------------
 
-    short randomBoard[boardSide][boardSide];
+    short board[boardSide][boardSide];
 
     for (int x = 0; x < boardSide; x++) {
         for (int y = 0; y < boardSide; y++) {
-            randomBoard[x][y] = rand() % 2;
+            board[x][y] = rand() % 2;
         }
     }
 
@@ -46,9 +62,16 @@ int main(void) {
     {
         // Update
         //----------------------------------------------------------------------------------
-        GetMousePosition();
 
         if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+            IntVector2 mousePositionOnBoard = GetMousePositionOnBoard();
+
+            // TODO: clean this up (bit operations?)
+            short cellState =
+                board[mousePositionOnBoard.x][mousePositionOnBoard.y];
+
+            board[mousePositionOnBoard.x][mousePositionOnBoard.y] =
+                cellState == 0 ? 1 : 0;
         }
 
         /*     cellColor = MAROON; */
@@ -64,7 +87,7 @@ int main(void) {
 
         ClearBackground(RAYWHITE);
 
-        DrawBoard(randomBoard, cellSide);
+        DrawBoard(board, cellSide);
 
         EndDrawing();
         //----------------------------------------------------------------------------------
