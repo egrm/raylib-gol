@@ -1,15 +1,3 @@
-/*******************************************************************************************
- *
- *   raylib [core] example - Mouse input
- *
- *   This example has been created using raylib 1.0 (www.raylib.com)
- *   raylib is licensed under an unmodified zlib/libpng license (View raylib.h
- *for details)
- *
- *   Copyright (c) 2014 Ramon Santamaria (@raysan5)
- *
- ********************************************************************************************/
-
 #include "raylib.h"
 #include <stdlib.h>
 
@@ -37,8 +25,7 @@ int main(void) {
     //--------------------------------------------------------------------------------------
     const int boardSide = 20;
 
-    InitWindow(screenWidth, screenHeight,
-               "raylib [core] example - mouse input");
+    InitWindow(screenWidth, screenHeight, "game of life");
 
     Vector2 rectPosition = {-100.0f, -100.0f};
     Vector2 rectSize = {20.0f, 20.0f};
@@ -59,9 +46,11 @@ int main(void) {
     {
         // Update
         //----------------------------------------------------------------------------------
-        rectPosition = GetMousePosition();
+        GetMousePosition();
 
-        /* if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) */
+        if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+        }
+
         /*     cellColor = MAROON; */
         /* else if (IsMouseButtonPressed(MOUSE_MIDDLE_BUTTON)) */
         /*     cellColor = LIME; */
