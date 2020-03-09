@@ -125,6 +125,8 @@ int main(void) {
 
             board[mousePositionOnBoard.x][mousePositionOnBoard.y] =
                 cellState == 0 ? 1 : 0;
+
+            lastMousePositionOnBoard = mousePositionOnBoard;
         }
 
         if (IsKeyDown(KEY_SPACE)) {
