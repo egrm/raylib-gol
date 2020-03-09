@@ -89,8 +89,7 @@ void NullifyBoard(short board[][boardSide]) {
 }
 
 int main(void) {
-    // Initialization
-    //--------------------------------------------------------------------------------------
+    /* Initialization */
     const int boardSide = 20;
 
     InitWindow(screenWidth, screenHeight, "game of life");
@@ -98,8 +97,7 @@ int main(void) {
     Vector2 rectPosition = {-100.0f, -100.0f};
     Vector2 rectSize = {20.0f, 20.0f};
 
-    SetTargetFPS(60); // Set our game to run at 60 frames-per-second
-    //-------------s--------------------------------------------------------------------------
+    SetTargetFPS(60);
 
     short board[boardSide][boardSide];
 
@@ -109,11 +107,10 @@ int main(void) {
     lastMousePositionOnBoard.x = boardSide + 1;
     lastMousePositionOnBoard.y = boardSide + 1;
 
-    // Main game loop
+    /* Main game loop */
     while (!WindowShouldClose()) // Detect window close button or ESC key
     {
-        // Update
-        //----------------------------------------------------------------------------------
+        /* Update */
 
         IntVector2 mousePositionOnBoard = GetMousePositionOnBoard();
 
@@ -142,15 +139,8 @@ int main(void) {
             NullifyBoard(board);
         }
 
-        /*     cellColor = MAROON; */
-        /* else if (IsMouseButtonPressed(MOUSE_MIDDLE_BUTTON)) */
-        /*     cellColor = LIME; */
-        /* else if (IsMouseButtonPressed(MOUSE_RIGHT_BUTTON)) */
-        /*     cellColor = DARKBLUE; */
-        //----------------------------------------------------------------------------------
+        /* Draw */
 
-        // Draw
-        //----------------------------------------------------------------------------------
         BeginDrawing();
 
         ClearBackground(RAYWHITE);
@@ -158,13 +148,11 @@ int main(void) {
         DrawBoard(board, cellSide);
 
         EndDrawing();
-        //----------------------------------------------------------------------------------
     }
 
-    // De-Initialization
-    //--------------------------------------------------------------------------------------
+    /* De-Initialization */
+
     CloseWindow(); // Close window and OpenGL context
-    //--------------------------------------------------------------------------------------
 
     return 0;
 }
