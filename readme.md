@@ -1,7 +1,17 @@
 # Raylib Game of Life
 
+## Features
+
+Shortcuts are QWERTY-based regaldless of the layout.
+
+- hold left mouse button and drag to draw
+- hold SPACE to progress through generations
+- R to randomize the board
+- C to clean the board
+
 ## Run a release binary
 [Download](https://github.com/egrm/raylib-gol/releases) latest release binary.
+
 
 Give it executable rights & run:
 ```bash
