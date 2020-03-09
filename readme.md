@@ -2,7 +2,7 @@
 
 ## Features
 
-Shortcuts are QWERTY-based regaldless of the layout.
+Shortcuts are QWERTY-based regardless of the layout.
 
 - hold left mouse button and drag to draw
 - hold SPACE to progress through generations
