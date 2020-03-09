@@ -1,26 +1,29 @@
 #include "raylib.h"
 #include <stdlib.h>
+#include <string.h>
+
+#define screenWidth 800
+#define screenHeight 800
+
+#define deadColor DARKBLUE
+#define aliveColor RAYWHITE
+
+#define boardSide 80
 
 typedef struct {
     int x;
     int y;
 } IntVector2;
 
-const int screenWidth = 400;
-const int screenHeight = 400;
+const float cellSide = (screenHeight > screenWidth)
+                           ? (screenWidth / boardSide)
+                           : (screenHeight / boardSide);
 
-const int boardSide = 20;
-const float cellSide = screenHeight > screenWidth ? screenWidth / boardSide
-                                                  : screenHeight / boardSide;
-
-Color deadColor = DARKBLUE;
-Color aliveColor = RAYWHITE;
-
-void DrawBoard(unsigned char cells[][boardSide], float cellSide) {
+void DrawBoard(unsigned char board[boardSide][boardSide], float cellSide) {
     for (int x = 0; x < boardSide; x++) {
         for (int y = 0; y < boardSide; y++) {
             DrawRectangle(cellSide * x, cellSide * y, cellSide, cellSide,
-                          cells[x][y] == 0 ? deadColor : aliveColor);
+                          board[x][y] == 0 ? deadColor : aliveColor);
         }
     }
 }
@@ -30,13 +33,13 @@ IntVector2 GetMousePositionOnBoard() {
 
     IntVector2 boardPosition;
 
-    boardPosition.x = mousePosition.x / boardSide;
-    boardPosition.y = mousePosition.y / boardSide;
+    boardPosition.x = boardSide * mousePosition.x / screenWidth;
+    boardPosition.y = boardSide * mousePosition.y / screenHeight;
 
     return boardPosition;
 }
 
-void NextBoard(unsigned char board[][boardSide]) {
+void NextBoard(unsigned char board[boardSide][boardSide]) {
     /* Any live cell with two or three neighbors survives. */
     /* Any dead cell with three live neighbors becomes a live cell. */
     /* All other live cells die in the next generation. Similarly, all other
@@ -72,7 +75,7 @@ void NextBoard(unsigned char board[][boardSide]) {
     memcpy(board, tempBoard, sizeof(unsigned char[boardSide][boardSide]));
 }
 
-void RandomizeBoard(unsigned char board[][boardSide]) {
+void RandomizeBoard(unsigned char board[boardSide][boardSide]) {
     for (int x = 0; x < boardSide; x++) {
         for (int y = 0; y < boardSide; y++) {
             board[x][y] = rand() % 2;
@@ -80,7 +83,7 @@ void RandomizeBoard(unsigned char board[][boardSide]) {
     }
 }
 
-void NullifyBoard(unsigned char board[][boardSide]) {
+void NullifyBoard(unsigned char board[boardSide][boardSide]) {
     for (int x = 0; x < boardSide; x++) {
         for (int y = 0; y < boardSide; y++) {
             board[x][y] = 0;
@@ -90,7 +93,6 @@ void NullifyBoard(unsigned char board[][boardSide]) {
 
 int main(void) {
     /* Initialization */
-    const int boardSide = 20;
 
     InitWindow(screenWidth, screenHeight, "game of life");
 
