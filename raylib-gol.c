@@ -118,8 +118,8 @@ int main(void) {
 
         if (IsMouseButtonDown(MOUSE_LEFT_BUTTON) &&
             // TODO: can the repetition in the conditions be removed here?
-            mousePositionOnBoard.x != lastMousePositionOnBoard.x &&
-            mousePositionOnBoard.y != lastMousePositionOnBoard.y) {
+            (mousePositionOnBoard.x != lastMousePositionOnBoard.x ||
+             mousePositionOnBoard.y != lastMousePositionOnBoard.y)) {
 
             // TODO: clean this up (bit operations?)
             unsigned char cellState =
