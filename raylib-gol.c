@@ -16,7 +16,7 @@ const float cellSide = screenHeight > screenWidth ? screenWidth / boardSide
 Color deadColor = DARKBLUE;
 Color aliveColor = RAYWHITE;
 
-void DrawBoard(short cells[][boardSide], float cellSide) {
+void DrawBoard(unsigned char cells[][boardSide], float cellSide) {
     for (int x = 0; x < boardSide; x++) {
         for (int y = 0; y < boardSide; y++) {
             DrawRectangle(cellSide * x, cellSide * y, cellSide, cellSide,
@@ -36,17 +36,17 @@ IntVector2 GetMousePositionOnBoard() {
     return boardPosition;
 }
 
-void NextBoard(short board[][boardSide]) {
+void NextBoard(unsigned char board[][boardSide]) {
     /* Any live cell with two or three neighbors survives. */
     /* Any dead cell with three live neighbors becomes a live cell. */
     /* All other live cells die in the next generation. Similarly, all other
      * dead cells stay dead. */
 
-    short tempBoard[boardSide][boardSide];
+    unsigned char tempBoard[boardSide][boardSide];
 
     for (int x = 0; x < boardSide; x++) {
         for (int y = 0; y < boardSide; y++) {
-            short livingNeighbors = 0;
+            unsigned char livingNeighbors = 0;
 
             livingNeighbors += board[x][y - 1];
             livingNeighbors += board[x][y + 1];
@@ -69,10 +69,10 @@ void NextBoard(short board[][boardSide]) {
     }
 
     // TODO: is this a memory leak?
-    memcpy(board, tempBoard, sizeof(short[boardSide][boardSide]));
+    memcpy(board, tempBoard, sizeof(unsigned char[boardSide][boardSide]));
 }
 
-void RandomizeBoard(short board[][boardSide]) {
+void RandomizeBoard(unsigned char board[][boardSide]) {
     for (int x = 0; x < boardSide; x++) {
         for (int y = 0; y < boardSide; y++) {
             board[x][y] = rand() % 2;
@@ -80,7 +80,7 @@ void RandomizeBoard(short board[][boardSide]) {
     }
 }
 
-void NullifyBoard(short board[][boardSide]) {
+void NullifyBoard(unsigned char board[][boardSide]) {
     for (int x = 0; x < boardSide; x++) {
         for (int y = 0; y < boardSide; y++) {
             board[x][y] = 0;
@@ -99,7 +99,7 @@ int main(void) {
 
     SetTargetFPS(60);
 
-    short board[boardSide][boardSide];
+    unsigned char board[boardSide][boardSide];
 
     NullifyBoard(board);
 
@@ -120,7 +120,7 @@ int main(void) {
             mousePositionOnBoard.y != lastMousePositionOnBoard.y) {
 
             // TODO: clean this up (bit operations?)
-            short cellState =
+            unsigned char cellState =
                 board[mousePositionOnBoard.x][mousePositionOnBoard.y];
 
             board[mousePositionOnBoard.x][mousePositionOnBoard.y] =
